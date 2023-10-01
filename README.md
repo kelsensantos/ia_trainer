@@ -1,5 +1,3 @@
-# ia_trainer
-
 
 # Introdução
 
