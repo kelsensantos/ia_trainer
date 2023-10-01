@@ -1,2 +1,6 @@
+import bert
+import bow
+import auxiliares
 
-from juspln.auxiliares import *
+from nltk import download
+download('stopwords')
