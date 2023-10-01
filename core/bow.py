@@ -7,6 +7,8 @@ from nltk.corpus import stopwords
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import make_pipeline
 from sklearn.model_selection import StratifiedKFold, cross_validate, GridSearchCV
+from joblib import load
+from urllib.request import urlretrieve, urlcleanup
 
 from core.auxiliares import *
 
@@ -14,6 +16,15 @@ from core.auxiliares import *
 # recursos
 words_to_stop = set(stopwords.words('portuguese'))
 lemmatizador = spacy.load('pt_core_news_md')
+
+
+# recurso
+TRAINED_MODELS = {
+    'kelsensantos/bow_peticoes_classificador_tipo': 'https://huggingface.co/kelsensantos'
+                                                    '/bow_peticoes_classificador_tipo/resolve/main/bow_model.pkl',
+    'kelsensantos/bow_peticoes_classificador_assunto': 'https://huggingface.co/kelsensantos'
+                                                       '/bow_peticoes_classificador_assunto/resolve/main/bow_model.pkl'
+}
 
 
 def pre_processar(texto):
@@ -201,3 +212,24 @@ def make_grid_searcher(
         pre_dispatch=pre_dispatch
     )
     return grid
+
+
+def load_model(
+    model_path: str,
+    trained_models_paths: None | dict = None,
+    filename: None | str = None,
+):
+    # carrega a URL onde o modelo está depositado, se existir no dicionário
+    if trained_models_paths is None:
+        trained_models_paths = TRAINED_MODELS
+    if model_path in trained_models_paths.keys():
+        url = trained_models_paths[model_path]
+    else:
+        url = model_path
+    # carrega o modelo
+    response = urlretrieve(url, filename)
+    model = load(response[0])
+    # limpa arquivos temporários
+    urlcleanup()
+    # retorna o modelo
+    return model
