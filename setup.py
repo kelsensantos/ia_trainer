@@ -13,10 +13,9 @@ def read_file(file):
 version = read_file("VERSION")
 
 setup(
-    name="juspln",
+    name='juspln',
     version=version,
-    description="Modelos pré treinados para aplicação de PLN em textos jurídicos.",
-    package_dir={"": "juspln"},
+    description='Modelos pré treinados para aplicação de PLN em textos jurídicos.',
     packages=find_packages(),
     # long_description=long_description,
     # long_description_content_type="text/markdown",
