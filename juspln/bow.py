@@ -10,7 +10,7 @@ from sklearn.model_selection import StratifiedKFold, cross_validate, GridSearchC
 from joblib import load
 from urllib.request import urlretrieve, urlcleanup
 
-from core.auxiliares import *
+from juspln.auxiliares import *
 
 
 # recursos
