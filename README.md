@@ -1,13 +1,47 @@
 
 # Introdução
 
-Acesse o trabalho ...
+Esse repositório é inicialmente fruto de Monografia apresentada ao Departamento de
+Ciências de Computação do Instituto de Ciências Matemáticas e de Computação 
+da Universidade de São Paulo - ICMC/USP -, como parte dos requisitos para
+obtenção do título de Especialista m Inteligência Artificial e Big Data. 
 
-Referencia ...
+O estudo completo pode ser acessado
+[neste link](https://drive.google.com/file/d/1BXzXhQVzZWz0B4ROfOmDHfm1KuLw__jp/view?usp=sharing).
+
+Caso o utilize, por favor citar a seguinte fonte:
+
+> Santos, Kelsen Henrique Rolim dos. Classificação de textos de petições jurídicas
+com base em técnicas de Processamento de Línguas Naturais / 
+Kelsen Henrique Rolim dos Santos; orientador Thiago Alexandre Salgueiro Pardo. -
+São Carlos, 2023. 112 p. : il. (algumas color.)
+
+```
+@misc{SANTOS_2023, 
+    title={Classificação de textos de petições jurídicas com base em
+    técnicas de Processamento de Línguas Naturais},
+    author={SANTOS, KELSEN HENRIQUE ROLIM DOS},
+    year={2023}
+} 
+```
 
 Me contate em caso de dúvidas ou sugestões  
 [kelsensantos@gmail.com](mailto:kelsensantos@gmail.com)
 
+
+# Resumo
+
+O interesse na aplicação de inteligência artificial no domínio jurídico tem sido
+crescente, ante o potencial para agilizar o trabalho de profissionais e melhorar
+serviços públicos, sendo o Processamento de Línguas Naturais (PLN uma das áreas
+de maior utilidade. Este trabalho explora a aplicação de PLN para classificação
+de petições jurídicas destinadas a processos judiciais, utilizando um conjunto
+de dados produzidos pela Defensoria Pública do Estado de Rondônia. São
+experimentadas técnicas de Bag of Words e Bidirectional Encoder Representations
+for Transformers (BERT) para realizar classificações por Assunto e por Tipo
+das petições, tendo esta se destacado segundo as métricas calculadas. Os resultados
+demonstram a viabilidade de aplicação de modelos de linguagem para a auxiliar
+a rotina profissionais com automatização da classificação de documentos.
 
 # Instalação
 
@@ -20,7 +54,7 @@ from IPython.display import clear_output
 ! python -m pip install git+https://github.com/kelsensantos/juspln
 clear_output()
 
-
+from juspln import bow, bert
 
 ```
 
@@ -30,7 +64,8 @@ clear_output()
 
 Para melhor otimizar o processo, realize o pré processamento do texto utilizando a 
 função ```pre_processar_df```. Ela retorna um DataFrame Pandas que pode ser guardado 
-para uso posterior na etapa de validação cruzada.
+para uso posterior na etapa de validação cruzada. Considere que o vetorizador criado 
+com ```TfidfVectorizer``` deve transformar o texto já pré-processado.
 
 A validação cruzada é realizada pela função ```processar_bow```, sobre uma lista 
 de vetorizadores e classificadores. Podem ser utilizadas os métodos implementados pela 
@@ -39,7 +74,7 @@ experimento. Por favor, consulta o texto do trabalho para maiores detalhes acerc
 classificadores utilizados.
 
 ```
-from core.bow import processar_bow
+from juspln.bow import processar_bow
 
 # exemplo de lista de classificadores
 classificadores = [
@@ -105,6 +140,21 @@ joblib.dump(grip, f'{path}.pkl')
 
 ## Para utilizar o modelo treinado
 
+O modelo que realiza classificações por tipo de petição está disponível na comunidade
+[Hugging Face](https://huggingface.co/), no repositório 
+[kelsensantos/bow_peticoes_classificador_tipo](https://huggingface.co/kelsensantos/bow_peticoes_classificador_tipo).
+Para utilizá-lo baixe o modelo e carregue utilizando a função ```load``` da biblioteca 
+```joblib```, ou a função ```load_model``` implementada neste pacote:
+
+````
+from juspln import bow
+
+model = bow.load_model('kelsensantos/bow_peticoes_classificador_tipo')
+````
+
+Essa função pode ser utilizada para carrgar outros modelos, basta direcioná-la para
+o caminho com o arquivo ```pkl``` correspondente com o parâmetro ```model_path``` 
+(pode ser uma URL ou um caminho de arquivo).
 
 # BERT
 

@@ -1,6 +1,7 @@
 import re
 import os
 import spacy
+import json
 
 from datetime import datetime
 from nltk.corpus import stopwords
@@ -9,6 +10,7 @@ from imblearn.pipeline import make_pipeline
 from sklearn.model_selection import StratifiedKFold, cross_validate, GridSearchCV
 from joblib import load
 from urllib.request import urlretrieve, urlcleanup
+from huggingface_hub import hf_hub_download
 
 from juspln.auxiliares import *
 
@@ -21,9 +23,7 @@ lemmatizador = spacy.load('pt_core_news_md')
 # recurso
 TRAINED_MODELS = {
     'kelsensantos/bow_peticoes_classificador_tipo': 'https://huggingface.co/kelsensantos'
-                                                    '/bow_peticoes_classificador_tipo/resolve/main/bow_model.pkl',
-    'kelsensantos/bow_peticoes_classificador_assunto': 'https://huggingface.co/kelsensantos'
-                                                       '/bow_peticoes_classificador_assunto/resolve/main/bow_model.pkl'
+                                                    '/bow_peticoes_classificador_tipo/resolve/main/bow_model.pkl'
 }
 
 
@@ -233,3 +233,34 @@ def load_model(
     urlcleanup()
     # retorna o modelo
     return model
+
+
+class BowModel:
+
+    def __init__(
+            self,
+            model_path: str,
+            trained_models_paths: None | dict = None,
+            classes_map: None | dict = None
+    ):
+
+        if trained_models_paths is None:
+            trained_models_paths = TRAINED_MODELS
+
+        self.model = load_model(model_path=model_path, trained_models_paths=trained_models_paths)
+
+        if model_path in trained_models_paths:
+            repo_id = model_path
+            filename = 'classes_map.json'
+            file = hf_hub_download(repo_id=repo_id, filename=filename, repo_type="model")
+            with open(file) as json_file:
+                classes_map = json.load(json_file)
+                self.classes_map = classes_map
+        else:
+            self.classes_map = classes_map
+
+    def predict(self, X: str):
+        X_preprocessed = pre_processar(X)
+        y = self.model.predict([X_preprocessed])[0]
+        class_name = self.classes_map[y]
+        return class_name
