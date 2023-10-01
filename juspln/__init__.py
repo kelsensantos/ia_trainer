@@ -1,2 +1,2 @@
 
-from juspln.auxiliares import listar
+from juspln.auxiliares import *
