@@ -255,7 +255,9 @@ class BowModel:
             file = hf_hub_download(repo_id=repo_id, filename=filename, repo_type="model")
             with open(file) as json_file:
                 classes_map = json.load(json_file)
+                classes_map = {int(k): i for k, i in classes_map.items()}
                 self.classes_map = classes_map
+
         else:
             self.classes_map = classes_map
 
