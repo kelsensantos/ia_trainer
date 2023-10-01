@@ -8,6 +8,22 @@ Referencia ...
 Me contate em caso de dúvidas ou sugestões  
 [kelsensantos@gmail.com](mailto:kelsensantos@gmail.com)
 
+
+# Instalação
+
+Instale como um pacote Python.
+
+```
+# instalation code exemple
+
+from IPython.display import clear_output
+! python -m pip install git+https://github.com/kelsensantos/juspln
+clear_output()
+
+
+
+```
+
 # Bag of Words
 
 ## Para treinar novos modelos
