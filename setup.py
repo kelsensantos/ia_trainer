@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     # long_description=long_description,
     # long_description_content_type="text/markdown",
-    url='https://github.com/kelsensantos/juspln/',
+    url='https://github.com/kelsensantos/juspln/juspln',
     author="kelsensantos",
     author_email="kelsensantos@gmail.com",
     license="MIT",
