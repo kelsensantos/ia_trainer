@@ -19,7 +19,7 @@ setup(
     name='juspln',
     version=version,
     author="kelsensantos",
-    packages=['jusnlp'],
+    packages=['juspln'],
     author_email="kelsensantos@gmail.com",
     url='https://github.com/kelsensantos/juspln/',
     description='Modelos pré treinados para aplicação de PLN em textos jurídicos.',
