@@ -144,17 +144,21 @@ O modelo que realiza classificações por tipo de petição está disponível na
 [Hugging Face](https://huggingface.co/), no repositório 
 [kelsensantos/bow_peticoes_classificador_tipo](https://huggingface.co/kelsensantos/bow_peticoes_classificador_tipo).
 Para utilizá-lo baixe o modelo e carregue utilizando a função ```load``` da biblioteca 
-```joblib```, ou a função ```load_model``` implementada neste pacote:
+```joblib```, ou crie um objeto da classe ```BowModel``` implementada neste pacote:
 
 ````
 from juspln import bow
 
-model = bow.load_model('kelsensantos/bow_peticoes_classificador_tipo')
+model = bow.BowModel('kelsensantos/bow_peticoes_classificador_tipo')
+
+# X é uma string única
+# o retorno é uma classe (no caso, um Tipo de petição)
+model_bow.predict(X)
 ````
 
-Essa função pode ser utilizada para carrgar outros modelos, basta direcioná-la para
-o caminho com o arquivo ```pkl``` correspondente com o parâmetro ```model_path``` 
-(pode ser uma URL ou um caminho de arquivo).
+A função ```load_model``` pode ser utilizada para carrgar outros modelos,
+basta direcioná-la para o caminho com o arquivo ```pkl``` correspondente com
+o parâmetro ```model_path``` (pode ser uma URL ou um caminho de arquivo).
 
 # BERT
 
