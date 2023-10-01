@@ -50,10 +50,7 @@ def check_possible_variable(variable, possible_values):
         raise ValueError(f"Only followed values are allowed for '{get_variable_name(variable)}': {possible_values}.")
 
 
-def cria_logger(
-        experimento: str,
-        id,
-):
+def cria_logger(experimento: str, id: str):
     logger = pl.loggers.TensorBoardLogger(
         save_dir=os.getcwd(),
         name=experimento,
@@ -437,3 +434,34 @@ def prepare_bert_objects(
     )
 
     return model, data_module, trainer
+
+
+def test_report(model, dataloader, device):
+    """Use it to test the model over validation dataloader."""
+    y_real = []
+    y_preds = []
+
+    total = len(dataloader)
+    print(f"Total de {total} batches.")
+
+    for i, batch in enumerate(dataloader):
+
+        y_real.extend(batch['label'].tolist())
+
+        logits = model(
+            batch['input_ids'].to(device),
+            batch['attention_mask'].to(device)
+            )
+        preds = torch.argmax(logits, dim=1).tolist()
+        y_preds.extend(preds)
+
+        if i % 200 == 0 and not i == 0:
+            print(f"Batch {i}/{total} done....")
+
+    print("Done!")
+    print("")
+    print("")
+    print(classification_report(y_real, y_preds))
+    report = classification_report(y_real, y_preds, output_dict=True, digits=3)
+
+    return report, y_real, y_preds
